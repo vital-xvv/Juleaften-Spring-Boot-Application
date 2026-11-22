@@ -14,7 +14,7 @@ RUN --mount=type=cache,target=/root/.m2 \
 
 FROM eclipse-temurin:25-jre-alpine AS extract
 WORKDIR /builder
-COPY --from=build /src/target/juleaften-1.0.3.jar application.jar
+COPY --from=build /src/target/juleaften-1.0.4.jar application.jar
 RUN java -Djarmode=tools -jar application.jar extract --layers --destination extracted
 
 FROM eclipse-temurin:25-jre-alpine

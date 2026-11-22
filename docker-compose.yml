@@ -42,7 +42,8 @@ services:
       GOOGLE_SECRET: ${GOOGLE_SECRET}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      HTTP_SECURE: ${HTTP_SECURE:-false}
+      HTTP_SECURE: ${HTTP_SECURE:-true}
+      HTTP_SAME_SITE: ${HTTP_SAME_SITE:-None}
       CLIENT_URL_BASE: ${CLIENT_URL_BASE:-http://localhost:5173}
     networks:
       - juleaften
