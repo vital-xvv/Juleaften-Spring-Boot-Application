@@ -1,5 +1,19 @@
 package info.app.juleaften.exception;
 
-public class ExceptionCode {
+public enum ExceptionCode {
+    UNKNOWN_ERROR,
 
+    ACCOUNT_DETAILS_UNAVAILABLE,
+    REGISTRATION_FAILED,
+    EVENT_INFORMATION_FAILED,
+
+    // Authentication
+    LOGIN_FAILED,
+    LOGOUT_FAILED,
+    INVALID_CREDENTIALS,
+
+    // Email verification
+    EMAIL_VERIFICATION_FAILED,
+    EMAIL_VERIFICATION_INVALID_OR_EXPIRED,
+    EMAIL_VERIFICATION_TOKEN_MISSING
 }

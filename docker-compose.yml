@@ -1,0 +1,55 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: juleaften-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: juleaften
+      MYSQL_USER: juleaften
+      MYSQL_PASSWORD: ${MYSQL_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    networks:
+      - juleaften
+
+  juleaften:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: juleaften:latest
+    container_name: juleaften-app
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      MYSQL_DB_URL: jdbc:mysql://mysql:3306/juleaften?allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8
+      MYSQL_DB_USERNAME: juleaften
+      MYSQL_DB_PASSWORD: ${MYSQL_DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      GOOGLE_USERNAME: ${GOOGLE_USERNAME}
+      GOOGLE_SECRET: ${GOOGLE_SECRET}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      HTTP_SECURE: ${HTTP_SECURE:-false}
+      CLIENT_URL_BASE: ${CLIENT_URL_BASE:-http://localhost:5173}
+    networks:
+      - juleaften
+
+volumes:
+  mysql_data:
+
+networks:
+  juleaften:
+    driver: bridge
