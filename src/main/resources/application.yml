@@ -1,0 +1,72 @@
+spring:
+  application:
+    name: juleaften
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GOOGLE_USERNAME}
+    password: ${GOOGLE_SECRET}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  datasource:
+    url: ${MYSQL_DB_URL}
+    password: ${MYSQL_DB_PASSWORD}
+    username: ${MYSQL_DB_USERNAME}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${GOOGLE_CLIENT_ID}
+            clientSecret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+              - openid
+        provider:
+          google:
+            authorizationUri: https://accounts.google.com/o/oauth2/v2/auth
+            tokenUri: https://oauth2.googleapis.com/token
+            userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo
+
+  thymeleaf:
+    prefix: classpath:/templates/
+
+logging:
+  level:
+    info:
+      app:
+        juleaften: INFO
+
+password:
+  auto:
+    size: ${DEFAULT_PASSWORD_SIZE:16}
+
+jwt:
+  expiration:
+    millis: ${EXPIRATION_MILLIS:86400000} # 24 hours
+  secret: ${JWT_SECRET}
+
+
+
+email:
+  from: ${GOOGLE_USERNAME}
+
+http:
+  secure: ${HTTP_SECURE:false}
+  clientBaseUrl: ${CLIENT_URL_BASE:http://localhost:5173}
