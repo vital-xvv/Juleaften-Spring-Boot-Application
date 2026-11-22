@@ -139,7 +139,7 @@ public class UserProfileService {
             context.setVariable("expiryHours", 24);
             context.setVariable("password", generatedPassword);
 
-            String content = templateEngine.process("/email_templates/email_verify.html", context);
+            String content = templateEngine.process("email_templates/email_verify", context);
 
             emailNotificationService.sendMessage(userProfile.getUser().getEmail(), "Email Verification", content, true);
         } catch (Exception e) {

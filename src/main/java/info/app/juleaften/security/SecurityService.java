@@ -52,7 +52,7 @@ public class SecurityService {
                 .httpOnly(true)
                 .secure(httpConfig.isSecure()) // true in production with HTTPS
                 .path("/")
-                .sameSite("Lax")
+                .sameSite(httpConfig.getSameSite())
                 .maxAge(Duration.ofMillis(EXPIRATION_TIME).getSeconds())
                 .build();
     }
@@ -62,7 +62,7 @@ public class SecurityService {
                 .from(ACCESS_TOKEN_COOKIE_NAME, "")
                 .httpOnly(true)
                 .secure(httpConfig.isSecure())
-                .sameSite("Lax")
+                .sameSite(httpConfig.getSameSite())
                 .path("/")
                 .maxAge(0)
                 .build();

@@ -46,6 +46,8 @@ spring:
 
   thymeleaf:
     prefix: classpath:/templates/
+    suffix: .html
+    check-template-location: true
 
 logging:
   level:
@@ -69,6 +71,7 @@ email:
 
 http:
   secure: ${HTTP_SECURE:false}
+  sameSite: ${HTTP_SAME_SITE:None}
   clientBaseUrl: ${CLIENT_URL_BASE:http://localhost:5173}
 
 management:

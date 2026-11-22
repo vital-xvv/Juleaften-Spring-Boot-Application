@@ -21,7 +21,10 @@ public class EventService {
     public EventStatistics getEventStatistics(String eventName) {
         Event event = eventRepository.findByName(eventName).orElseThrow(() -> new EventNotFoundException(eventName));
 
-        List<Visit> registeredVisits = event.getVisit().stream().filter(v -> v.getStatus() == VisitStatus.REGISTERED).toList();
+        List<Visit> registeredVisits = event.getVisit().stream()
+                .filter(v ->
+                        v.getStatus() == VisitStatus.REGISTERED && v.getUserProfile().isAccountNonLocked())
+                .toList();
 
         EventStatistics eventStatistics = new EventStatistics();
         eventStatistics.setCapacity(event.getCapacity());

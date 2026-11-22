@@ -25,7 +25,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: juleaften:latest
+    image: vitalxvv/juleaften:latest
     container_name: juleaften-app
     restart: unless-stopped
     depends_on:
