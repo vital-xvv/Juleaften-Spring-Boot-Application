@@ -4,6 +4,7 @@ import info.app.juleaften.dto.response.EventStatistics;
 import info.app.juleaften.exception.exceptions.EventNotFoundException;
 import info.app.juleaften.model.Event;
 import info.app.juleaften.model.Visit;
+import info.app.juleaften.model.dictionary.Companionship;
 import info.app.juleaften.model.dictionary.VisitStatus;
 import info.app.juleaften.repository.EventRepository;
 import org.springframework.stereotype.Service;
@@ -29,12 +30,22 @@ public class EventService {
         EventStatistics eventStatistics = new EventStatistics();
         eventStatistics.setCapacity(event.getCapacity());
         eventStatistics.setRegisteredVisitsCount(registeredVisits.size());
-        eventStatistics.setFilledCapacity(registeredVisits.size() + registeredVisits.stream().map(Visit::getCompanionsCount).reduce(0, Integer::sum));
+        eventStatistics.setFilledCapacity(registeredVisits.size() + getTotalCompanionsCount(registeredVisits));
 
         int filledPercent = (int) (eventStatistics.getFilledCapacity() / (double) eventStatistics.getCapacity() * 100);
         eventStatistics.setFilledPercentage(filledPercent);
         eventStatistics.setFull(filledPercent == 100);
 
         return eventStatistics;
+    }
+
+    private long getTotalCompanionsCount(List<Visit> visits) {
+        return visits.stream().map(v ->
+             switch (v.getCompanionship()) {
+                case FAMILY, MIXED, FRIENDS -> v.getCompanionsCount();
+                case SINGLE -> 0;
+                case COUPLE -> 1;
+            }
+        ).reduce(0, Integer::sum);
     }
 }

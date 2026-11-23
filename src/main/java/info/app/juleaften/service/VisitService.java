@@ -3,6 +3,8 @@ package info.app.juleaften.service;
 import info.app.juleaften.dto.request.RegisterVisitRequest;
 import info.app.juleaften.dto.response.EventStatistics;
 import info.app.juleaften.dto.response.VisitInfoResponse;
+import info.app.juleaften.exception.exceptions.IllegalCompanionshipNumberException;
+import info.app.juleaften.exception.exceptions.RegistrationAlreadyExistsException;
 import info.app.juleaften.exception.exceptions.VisitNotFoundException;
 import info.app.juleaften.model.Visit;
 import info.app.juleaften.model.Event;
@@ -46,7 +48,7 @@ public class VisitService {
         Optional<Event> event = eventRepository.findByName(request.eventName());
         if (event.isEmpty() || !isCompanionshipValid(request.companionship(), request.companionCount())) {
             LOGGER.debug("Event or companionship not found for event name \"{}\" or companionCount {} is wrong", request.companionCount(), request.eventName());
-            return;
+            throw new IllegalCompanionshipNumberException(request.companionship(), request.companionCount());
         }
 
         Optional<UserProfile> userProfile = Optional.empty();
@@ -64,7 +66,7 @@ public class VisitService {
         if (existingVisit.isPresent()) {
             LOGGER.error("User {} {} has already registered for event {}",
                     userProfile.get().getUser().getFirstName(), userProfile.get().getUser().getLastName(), request.eventName());
-            return;
+            throw new RegistrationAlreadyExistsException(userProfile.get().getUser().getEmail());
         }
 
         Visit visit = new Visit();

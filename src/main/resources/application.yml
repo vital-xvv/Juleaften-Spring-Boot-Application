@@ -65,7 +65,6 @@ jwt:
   secret: ${JWT_SECRET}
 
 
-
 email:
   from: ${GOOGLE_USERNAME}
 

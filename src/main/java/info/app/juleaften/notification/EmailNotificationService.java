@@ -37,6 +37,8 @@ public class EmailNotificationService {
             messageHelper.setText(content, isHtml);
 
             mailSender.send(mimeMailMessage);
+
+            LOGGER.info("Email sent to {}", to);
         } catch (MessagingException e) {
             LOGGER.error("Error while sending email to {}", to, e);
         }
